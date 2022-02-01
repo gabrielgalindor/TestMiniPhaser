@@ -29,9 +29,6 @@ export class minigame extends Phaser.Scene{
         this.primer_cambio_flag = true;
         this.segundo_cambio = 30;
         this.segundo_cambio_flag = false;
-        //Limites para el carro (el personaje del usuario)
-        this.leftLimit = 100;
-        this.rightLimit = 900;
 
     }
 
@@ -44,8 +41,7 @@ export class minigame extends Phaser.Scene{
         this.load.image('basura1', './assets/ballenaschoco/basura1.png');
         this.load.image('basura2', './assets/ballenaschoco/basura2.png');
         this.load.image('basura3', './assets/ballenaschoco/basura3.png');
-
-        this.load.image('barco','./assets/ballenaschoco/barco.png');
+        this.load.image('barco', './assets/ballenaschoco/barco.png')
 
         this.load.atlas('title-choko','./assets/ballenaschoco/title-choko.png','./assets/ballenaschoco/title-choko.json');
     }
@@ -119,24 +115,12 @@ export class minigame extends Phaser.Scene{
         this.basuras = [];
         this.createBasura();
         this.createBasura();
-
-        //Crea la opcion de usar el teclado
-        this.cursor = this.input.keyboard.createCursorKeys();
-
-        this.barco = this.physics.add.sprite(400,480,"barco");
-        // Set el tamano del Collider
-        this.barco.body.setSize(297,50);
-        // Set la posición del collider
-        this.barco.body.setOffset(0,250);
+        
     }
     //Método que remplaza la función normal del Update
     pseudoupdate(delta){
         this.miliseconds -= delta;
         this.printTimeText();
-
-        //Controles del barco 
-        this.controlBarco();
-
         /* Se llama el método que sigue la lógica que maneja el array de las basuras
            con el fin de revisar si lo puede eliminar o continúa la animación
         */
@@ -148,23 +132,7 @@ export class minigame extends Phaser.Scene{
             this.createBasura();
         }
     }
-    controlBarco(){
-        if(this.cursor.left.isDown)
-        {
-            if(this.barco.x >= this.leftLimit)
-            {
-                this.barco.x-=10;
-            }
-        }
 
-        if(this.cursor.right.isDown)
-        {
-            if(this.barco.x <= this.rightLimit)
-            {
-                this.barco.x+=10;
-            }
-        }
-    }
     //Todos los siguientes métodos están relacionados al ciclo del minijuego
 
     //Metodo que permite crear los objetos clicleables
@@ -186,8 +154,8 @@ export class minigame extends Phaser.Scene{
         {
             texture_string = 'basura3';
         }
-        //Crea Sprite con física de imagen
-        let basura1 = this.physics.add.image(50+lucky_x, 100, texture_string).setInteractive();
+
+        let basura1 = this.add.sprite(50+lucky_x, 100, texture_string).setInteractive();
         basura1.setScale(0.30);
         console.log(this.score);
         basura1.on('pointerdown', (pointer) => {

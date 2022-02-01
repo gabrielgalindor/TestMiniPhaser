@@ -10,7 +10,7 @@ const config ={
 	type: Phaser.AUTO,
 	physics: {
         default: 'arcade',
-        arcade: { debug: false }
+        arcade: { debug: true }
     },
 	scene:[minigame]
 }
