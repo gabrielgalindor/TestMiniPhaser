@@ -190,6 +190,15 @@ export class minigame extends Phaser.Scene{
         let basura1 = this.physics.add.image(50+lucky_x, 100, texture_string).setInteractive();
         basura1.setScale(0.30);
         console.log(this.score);
+        this.physics.add.collider( basura1, 
+            this.barco,
+             function(){
+                basura1.destroy();
+                this.score +=10;
+                this.textScore.setText('Puntaje: '+this.score);
+             },
+             null,
+            this);
         basura1.on('pointerdown', (pointer) => {
 
             basura1.destroy();
