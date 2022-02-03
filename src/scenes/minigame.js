@@ -20,12 +20,12 @@ export class minigame extends Phaser.Scene{
         this.score = 0;
 
         //Variables de manejo de los sprites
-        this.velocidad_caida = 1;
+        this.velocidad_caida = 5;
         this.limiteY = 720;
         //Delay principal que distancia la creación de basura en segundos
         this.delay_basura = 5;
         this.call_basura_seconds = 5;
-        this.primer_cambio = 30;
+        this.primer_cambio = 28;
         this.primer_cambio_flag = true;
         this.segundo_cambio = 30;
         this.segundo_cambio_flag = false;
@@ -40,6 +40,8 @@ export class minigame extends Phaser.Scene{
         this.load.image('bg-ballenaschoco','./assets/ballenaschoco/background.jpg');
         this.load.image('seaballenas','./assets/ballenaschoco/sea8bits.jpg');
         this.load.image('whale', './assets/ballenaschoco/whal02.png');
+        this.load.image('mountains', './assets/ballenaschoco/layer2.png');
+        this.load.image('leaves', './assets/ballenaschoco/layer_front.png');
         //Cargar imagenes 
         this.load.image('basura1', './assets/ballenaschoco/basura1.png');
         this.load.image('basura2', './assets/ballenaschoco/basura2.png');
@@ -51,8 +53,13 @@ export class minigame extends Phaser.Scene{
     }
     create()
     {
+        this.background_layer = this.add.layer();
+        this.front_layer = this.add.layer();
+
         this.background = this.add.tileSprite(centerw,centerh,game.config.width,game.config.height,'bg-ballenaschoco');
+        this.mountains = this.add.tileSprite(0,centerh+120,2711,204,'mountains');
         this.sea = this.add.tileSprite(0,centerh+200,2711,204,'seaballenas');
+        this.leaves = this.add.tileSprite(0,0,2711,204,'leaves');
         this.seaObjects.push("1");
 
         this.title = this.add.sprite(200,centerh-300,'title-choko','titleChoko0.png');
@@ -109,7 +116,7 @@ export class minigame extends Phaser.Scene{
         this.textScore = this.add.text(100, 50, 'Puntaje: 0', { fontFamily: 'Bitwise, "Arial", Times, serif', fontSize: '2rem', color: '#ffffff', stroke: "#0000fa", strokeThickness :2});
         
         //Variables del tiempo
-        this.minutes = 2;
+        this.minutes = 1;
         this.seconds = 59;
         this.miliseconds = 1000;
 
@@ -117,8 +124,7 @@ export class minigame extends Phaser.Scene{
         
         //Array de sprites clicleables (Basuras) que obtendrán los puntajes
         this.basuras = [];
-        this.createBasura();
-        this.createBasura();
+        
 
         //Crea la opcion de usar el teclado
         this.cursor = this.input.keyboard.createCursorKeys();
@@ -169,6 +175,7 @@ export class minigame extends Phaser.Scene{
 
     //Metodo que permite crear los objetos clicleables
     createBasura(){
+        console.log("Se creo basura");
         let lucky =Math.floor(Math.random()*300);
         let lucky_x = Math.floor(Math.random()*700);
         let texture_string = 'basura1';
@@ -227,6 +234,7 @@ export class minigame extends Phaser.Scene{
     {
         //Efecto de mover el fondo
         this.background.tilePositionX +=1*this.speed;
+        this.mountains.tilePositionX +=0.25*this.speed;
         this.sea.tilePositionX +=10*this.speed;
     }
     seaHandler()
@@ -235,7 +243,7 @@ export class minigame extends Phaser.Scene{
         {
             this.CreateSeaTimer+=1;
         }else{
-            this.seaObjects.push(this.physics.add.sprite(0,520,"whale").setScale(0.5));
+            
             this.CreateSeaTimer=-100;
         }
 
@@ -298,7 +306,7 @@ export class minigame extends Phaser.Scene{
                 }else{
                     //Acelerar el juego
                     this.delay_basura=2;
-                    this.velocidad_caida+=2;
+                    this.velocidad_caida+=3;
                     this.primer_cambio_flag=false;
                     this.segundo_cambio_flag = true;
                 }
@@ -311,7 +319,7 @@ export class minigame extends Phaser.Scene{
                     this.segundo_cambio-=1;
                 }else{
                     this.delay_basura=1;
-                    this.velocidad_caida+=6;
+                    this.velocidad_caida+=4;
                     this.segundo_cambio_flag=false;
                 }
             }
